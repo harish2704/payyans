@@ -52,6 +52,7 @@ class Payyans():
         self.rulesDict = None
         self.pdf = 0
         self.normalizer = Normalizer()
+        self.rules_cache = {}
 
     def Unicode2ASCII(self, unicode_text, font):
         unicode_text = self.normalizer.normalize(unicode_text)
@@ -198,8 +199,13 @@ class Payyans():
             return True
         else:
             return False
-
+	
     def LoadRules(self):
+        if self.mapping_filename not in self.rules_cache:
+            self.rules_cache[self.mapping_filename] = self.LoadRulesCached()
+        return self.rules_cache[self.mapping_filename]
+
+    def LoadRulesCached(self):
         '''
         ഈ സംഭവമാണു് മാപ്പിങ്ങ് ഫയല്‍ എടുത്തു് വായിച്ചു പഠിക്കുന്നതു്.
         '''
